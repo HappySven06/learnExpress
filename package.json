@@ -1,11 +1,11 @@
 {
-  "name": "learnexpress",
+  "name": "ta22elearnexpress",
   "version": "1.0.0",
-  "type": "module",
   "description": "",
   "main": "index.js",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "nodemon -e js,json,njk"
   },
   "keywords": [],
   "author": "",
@@ -13,6 +13,7 @@
   "dependencies": {
     "body-parser": "^1.20.2",
     "express": "^4.19.2",
+    "nunjucks": "^3.2.4",
     "sequelize": "^6.37.3",
     "sqlite3": "^5.1.7"
   },

@@ -2,6 +2,7 @@ import express from 'express';
 import nunjucks from 'nunjucks';
 import bodyParser from 'body-parser';
 import db from './models/index.js';
+import paginate from './pagination.js';
 const app = express();
 const port = 3000;
 const __dirname = import.meta.dirname;
@@ -15,10 +16,13 @@ nunjucks.configure('views', {
 
 // req => request , res => response
 app.get('/',async (req, res) => {
-    let posts = await db.Post.findAll();
-    console.log(posts);
-    console.log(req.query);
-    res.render('index.njk');
+    let [posts, pagination] = await paginate(db.Post, req.query.page, 20);
+    res.render('index.njk', {posts, pagination});
+});
+
+app.get('/view/:id', async(req, res) => {
+    let post = await db.Post.findByPk(req.params.id);
+    res.render('post.njk', {post});
 });
 
 app.get('/answer', (req, res) => {
@@ -30,6 +34,9 @@ app.post('/answer', (req, res) => {
     console.log(req.body);
     res.render('answer.njk', { ...req.body, ...req.query });
 });
+
+import postsController from './controllers/postsController.js';
+app.use('/posts', postsController);
 
 app.listen(port, () => {
     console.log(`Example app listening on port http://localhost:${port}`);
